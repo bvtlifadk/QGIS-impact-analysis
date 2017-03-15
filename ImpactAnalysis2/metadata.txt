@@ -1,0 +1,39 @@
+# This file contains metadata for your plugin. Since 
+# version 2.0 of QGIS this is the proper way to supply 
+# information about a plugin. The old method of 
+# embedding metadata in __init__.py will 
+# is no longer supported since version 2.0.
+
+# This file should be included when you package your plugin.# Mandatory items:
+
+[general]
+name=Impact Analysis 2
+qgisMinimumVersion=2.0
+description=Generates multilayer automated overlays analysis
+version=0.1
+author=Bo Victor Thomsen,  Municipality of Frederikssund, Denmark
+email=bvtho@frederikssund.dk
+
+about=Plugin to generate multilayer automated overlay analysis based on predefined layers grouped by profiles. All settings information is stored in a ODBC based database. All the involved layers has to be stored in a SQL based spatial database, that is supported by the QT QSQLDatabase module. (pt. All ODBC based databases, Postgres, SQLite a.o) The search object is defined by the user and can be created by directly drawing a polygon, line, point or by using a predefined seletion created by the ordinary select tool i QGIS. The search can be buffered by a user specified radius value.
+
+tracker=https://github.com/Frederikssund/QGIS-impact-analysis/issues
+repository=https://github.com/Frederikssund/QGIS-impact-analysis
+# End of mandatory metadata
+
+# Recommended items:
+
+# Uncomment the following line and add your changelog:
+# changelog=
+
+# Tags are comma separated with spaces allowed
+tags=analysis, database, intersection, select, overlay
+
+homepage=https://github.com/Frederikssund/QGIS-impact-analysis
+category=Plugins
+icon=icon.png
+# experimental flag
+experimental=False
+
+# deprecated flag (applies to the whole plugin, not just a single version)
+deprecated=False
+

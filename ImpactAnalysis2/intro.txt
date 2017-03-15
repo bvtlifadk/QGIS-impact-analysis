@@ -1,0 +1,28 @@
+Til alle brugere af det nye (pr. 14/3 2017) Sagsbehandler QGIS -
+
+Sagsbehandler QGIS er en hel ny opsætning af QGIS med en række nye udvidelser installeret. 
+
+Selv om GIS teamet har gjort sit bedste for at systemet fungerer optimalt, vil systemet 
+- som alle andre nye systemer - sandsynligvis være behæftet med nogle fejl/mangler.
+
+For at gøre systemet bedre, er det vigtigt at fundne fejl/mangler rapporteres til GIS teamet
+så hurtigt som muligt. 
+
+Det er primært dig - som bruger af systemet - der har den bedste mulighed for at gøre dette.
+GIS teamet kan til gengæld love dig, at rapporterede fejl/mangler rettes hurtigst muligt.
+
+Hvis du finder en fejl gør du følgende:
+
+Skriv en *mail* til "gis@frederikssund.dk" 
+
+Hver mail bør kun indeholder beskrivelsen af een fejl. Dette er for at gøre ekspeditionen af den enkelte fejlrettelse så hurtig som muligt
+ved hurtigt at kunne fordele fejlrettelser ud til de enkelte medlemmer af GIS teamet uden at skulle stå og "splitte" mails op. 
+
+Beskrivelsen bør være så specifik som mulig:
+
+- Hvad er fejlen ?
+- Hvilket undersystem/funktion optræder fejlen i?
+- Hvordan kan man replikere fejlen ? 
+- Optræder fejlen kun ved brug af specifikke data (lag, projekter, printskabeloner)
+
+
