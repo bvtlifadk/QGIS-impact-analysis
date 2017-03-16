@@ -5,7 +5,7 @@
 -- Dumped from database version 9.6.0
 -- Dumped by pg_dump version 9.6.0
 
--- Started on 2017-03-02 15:44:08
+-- Started on 2017-03-16 09:16:37
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -18,17 +18,19 @@ SET row_security = off;
 
 --
 -- TOC entry 8 (class 2615 OID 51611)
--- Name: conflict; Type: SCHEMA; Schema: -; Owner: -
+-- Name: conflict; Type: SCHEMA; Schema: -; Owner: postgres
 --
 
 CREATE SCHEMA "conflict";
 
 
+ALTER SCHEMA "conflict" OWNER TO "postgres";
+
 SET search_path = "conflict", pg_catalog;
 
 --
 -- TOC entry 202 (class 1259 OID 51612)
--- Name: conflict_seq; Type: SEQUENCE; Schema: conflict; Owner: -
+-- Name: conflict_seq; Type: SEQUENCE; Schema: conflict; Owner: postgres
 --
 
 CREATE SEQUENCE "conflict_seq"
@@ -39,11 +41,15 @@ CREATE SEQUENCE "conflict_seq"
     CACHE 1;
 
 
+ALTER TABLE "conflict_seq" OWNER TO "postgres";
+
+SET default_tablespace = '';
+
 SET default_with_oids = false;
 
 --
 -- TOC entry 203 (class 1259 OID 51614)
--- Name: connections; Type: TABLE; Schema: conflict; Owner: -
+-- Name: connections; Type: TABLE; Schema: conflict; Owner: postgres
 --
 
 CREATE TABLE "connections" (
@@ -58,9 +64,11 @@ CREATE TABLE "connections" (
 );
 
 
+ALTER TABLE "connections" OWNER TO "postgres";
+
 --
 -- TOC entry 204 (class 1259 OID 51621)
--- Name: layers; Type: TABLE; Schema: conflict; Owner: -
+-- Name: layers; Type: TABLE; Schema: conflict; Owner: postgres
 --
 
 CREATE TABLE "layers" (
@@ -79,9 +87,11 @@ CREATE TABLE "layers" (
 );
 
 
+ALTER TABLE "layers" OWNER TO "postgres";
+
 --
 -- TOC entry 205 (class 1259 OID 51631)
--- Name: profiles; Type: TABLE; Schema: conflict; Owner: -
+-- Name: profiles; Type: TABLE; Schema: conflict; Owner: postgres
 --
 
 CREATE TABLE "profiles" (
@@ -89,13 +99,16 @@ CREATE TABLE "profiles" (
     "profilename" character varying(100) NOT NULL,
     "default_tool" integer DEFAULT 1 NOT NULL,
     "default_buffersize" double precision DEFAULT 0.0 NOT NULL,
-    "default_searchtype" integer DEFAULT 0 NOT NULL
+    "default_searchtype" integer DEFAULT 0 NOT NULL,
+    "profile_link" character varying(254) DEFAULT ''::character varying NOT NULL
 );
 
 
+ALTER TABLE "profiles" OWNER TO "postgres";
+
 --
 -- TOC entry 206 (class 1259 OID 51635)
--- Name: profiles_layers; Type: TABLE; Schema: conflict; Owner: -
+-- Name: profiles_layers; Type: TABLE; Schema: conflict; Owner: postgres
 --
 
 CREATE TABLE "profiles_layers" (
@@ -105,9 +118,11 @@ CREATE TABLE "profiles_layers" (
 );
 
 
+ALTER TABLE "profiles_layers" OWNER TO "postgres";
+
 --
 -- TOC entry 207 (class 1259 OID 51639)
--- Name: servertypes; Type: TABLE; Schema: conflict; Owner: -
+-- Name: servertypes; Type: TABLE; Schema: conflict; Owner: postgres
 --
 
 CREATE TABLE "servertypes" (
@@ -116,13 +131,16 @@ CREATE TABLE "servertypes" (
     "sql_overview" character varying(255),
     "sql_detail" character varying(255),
     "sql_filter" character varying(255),
-    "serverconnection" character varying(255)
+    "serverconnection" character varying(255),
+    "wkt_field" character varying(50) DEFAULT ''::character varying NOT NULL
 );
 
 
+ALTER TABLE "servertypes" OWNER TO "postgres";
+
 --
--- TOC entry 209 (class 1259 OID 53397)
--- Name: profiles_layers_view; Type: VIEW; Schema: conflict; Owner: -
+-- TOC entry 210 (class 1259 OID 53531)
+-- Name: profiles_layers_view; Type: VIEW; Schema: conflict; Owner: postgres
 --
 
 CREATE VIEW "profiles_layers_view" AS
@@ -154,7 +172,8 @@ CREATE VIEW "profiles_layers_view" AS
     "s"."sql_overview",
     "s"."sql_detail",
     "s"."sql_filter",
-    "s"."serverconnection"
+    "s"."serverconnection",
+    "p"."profile_link"
    FROM (((("profiles_layers" "pl"
      LEFT JOIN "profiles" "p" ON (("pl"."pid" = "p"."pid")))
      LEFT JOIN "layers" "l" ON (("pl"."lid" = "l"."lid")))
@@ -162,9 +181,11 @@ CREATE VIEW "profiles_layers_view" AS
      LEFT JOIN "servertypes" "s" ON (("c"."sid" = "s"."sid")));
 
 
+ALTER TABLE "profiles_layers_view" OWNER TO "postgres";
+
 --
 -- TOC entry 208 (class 1259 OID 51651)
--- Name: projections; Type: TABLE; Schema: conflict; Owner: -
+-- Name: projections; Type: TABLE; Schema: conflict; Owner: postgres
 --
 
 CREATE TABLE "projections" (
@@ -173,9 +194,11 @@ CREATE TABLE "projections" (
 );
 
 
+ALTER TABLE "projections" OWNER TO "postgres";
+
 --
--- TOC entry 210 (class 1259 OID 53425)
--- Name: settings; Type: TABLE; Schema: conflict; Owner: -
+-- TOC entry 209 (class 1259 OID 53425)
+-- Name: settings; Type: TABLE; Schema: conflict; Owner: postgres
 --
 
 CREATE TABLE "settings" (
@@ -186,19 +209,21 @@ CREATE TABLE "settings" (
 );
 
 
+ALTER TABLE "settings" OWNER TO "postgres";
+
 --
--- TOC entry 3556 (class 0 OID 0)
+-- TOC entry 3568 (class 0 OID 0)
 -- Dependencies: 202
--- Name: conflict_seq; Type: SEQUENCE SET; Schema: conflict; Owner: -
+-- Name: conflict_seq; Type: SEQUENCE SET; Schema: conflict; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"conflict_seq"', 86, true);
+SELECT pg_catalog.setval('"conflict_seq"', 118, true);
 
 
 --
--- TOC entry 3545 (class 0 OID 51614)
+-- TOC entry 3547 (class 0 OID 51614)
 -- Dependencies: 203
--- Data for Name: connections; Type: TABLE DATA; Schema: conflict; Owner: -
+-- Data for Name: connections; Type: TABLE DATA; Schema: conflict; Owner: postgres
 --
 
 INSERT INTO "connections" ("cid", "sid", "connectionname", "host", "port", "database", "username", "password") VALUES (6, 1, 'lois_shadow på f-pgsql01.ad.frederikssund.dk', 'f-pgsql01.ad.frederikssund.dk', 5432, 'lois_shadow', 'postgres', 'ukulemy');
@@ -216,9 +241,9 @@ INSERT INTO "connections" ("cid", "sid", "connectionname", "host", "port", "data
 
 
 --
--- TOC entry 3546 (class 0 OID 51621)
+-- TOC entry 3548 (class 0 OID 51621)
 -- Dependencies: 204
--- Data for Name: layers; Type: TABLE DATA; Schema: conflict; Owner: -
+-- Data for Name: layers; Type: TABLE DATA; Schema: conflict; Owner: postgres
 --
 
 INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (58, 57, 'Matrikeldata,  dictionary form', '"dbo"', '"Jordstykke"', 'concat (''{''''landsejerlavskode'''': '''''',"landsejerlavskode",'''''', ''''matrikelnummer'''': '''''',"matrikelnummer",''''''}'')', '"featureID"', '"geometri"', '''NO LINK''', 25832, '''NO LINK''', '\\f-gis02\gis\Program Files\QGIS\Frederikssund temaer\005~Grunddata\Matrikeldata\Matrikelskel.qlr');
@@ -266,23 +291,54 @@ INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "com
 INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (84, 20, 'Fredede fortidsminder', '"dbo"', '"fundogfortid_punkt_fredet"', '"anlaegstype"', '"ogr_fid"', '"sp_geometry"', '"url"', 25832, '''NO LINK''', '');
 INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (85, 20, 'Fortidsmindebeskyttelseslinjer', '"dbo"', '"fundogfortid_areal_beskyttelse"', '"anlaegstype"', '"ogr_fid"', '"sp_geometry"', '"url"', 25832, '''NO LINK''', '');
 INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (86, 20, 'Fredede bygninger', '"dbo"', '"frededebygninger"', '"fredningsstatus"', '"ogr_fid"', '"sp_geometry"', '''NO LINK''', 25832, '''NO LINK''', '');
+INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (87, 20, 'Geokodningspunkter', '"dbo"', '"eomBygningspunkter"', '"Bygningsnummer"', '"MI_PRINX"', '"SP_GEOMETRY"', '''NO LINK''', 25832, '''NO LINK''', '');
+INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (88, 55, 'Byzoner og sommerhusområder', '"dbo"', '"Byzone_og_sommerhusomaader_1101"', '"Type1101"', '"MI_PRINX"', '"SP_GEOMETRY"', '''NO LINK''', 25832, '''NO LINK''', '');
+INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (89, 63, 'Fredede områder', '"dbo"', '"fredede_omr"', '"temanavn"', '"ogr_fid"', '"sp_geometry"', '"link"', 25832, '''NO LINK''', '');
+INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (90, 20, 'BBR-løse geokodningspunkter', '"dbo"', '"vwBYGNING_centroid"', '"BBR_REf_txt"', '"MI_PRINX"', '"SP_GEOMETRY"', '''NO LINK''', 25832, '''NO LINK''', '');
+INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (91, 20, 'Vejinteressezone', '"dbo"', '"E14210_vejinteressezone_S1"', '"beskrivelse"', '"MI_PRINX"', '"SP_GEOMETRY"', '''NO LINK''', 25832, '''NO LINK''', '');
+INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (92, 20, 'Samlet sandsynlighed', '"dbo"', '"risikokort"', '"maxrisk"', '"ogr_fid"', '"ogr_geometry"', '''NO LINK''', 25832, '''NO LINK''', '');
+INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (93, 20, 'Fejl og rettelser spildevandsplan', '"dbo"', '"rettelser_spildevandsplan2013"', '"informatio"', '"ogr_fid"', '"ogr_geometry"', '''NO LINK''', 25832, '''NO LINK''', '');
+INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (94, 20, 'Bevaringsværdig Slangerup', '"dbo"', '"bevaring_slangerup"', '"type"', '"ogr_fid"', '"ogr_geometry"', '''NO LINK''', 25832, '''NO LINK''', '');
+INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (95, 20, 'Bygning - Fredningsstatus høj', '"dbo"', '"bygning_fredningstatus_hoej"', '"adresse"', '"ogr_fid"', '"sp_geometry"', '''NO LINK''', 25832, '''NO LINK''', '');
+INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (96, 20, 'Overordnet fokus', '"dbo"', '"fokusomraader"', '"omradenavn"', '"ogr_fid"', '"ogr_geometry"', '''NO LINK''', 25832, '''NO LINK''', '');
+INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (97, 20, 'tillaeg_til_spildevandsplan', '"dbo"', '"tillaeg_til_spildevandsplan"', '"navn"', '"ogr_fid"', '"ogr_geometry"', '''NO LINK''', 25832, '''NO LINK''', '');
+INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (98, 20, 'Omr kommuneatlas', '"dbo"', '"Omraader_kommuneatlas"', '"Omraade"', '"MI_PRINX"', '"SP_GEOMETRY"', '"Link"', 25832, '''NO LINK''', '');
+INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (99, 53, 'Kommuneplantillæg', '"dbo"', '"pdk_kommuneplantillaeg_vedtaget_view"', '"plannavn"', '"ogr_fid"', '"sp_geometry"', '"doklink"', 25832, '''NO LINK''', '');
+INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (100, 53, 'Kommuneplanramme', '"dbo"', '"pdk_kommuneplanramme_vedtaget_view"', '"plannavn"', '"ogr_fid"', '"sp_geometry"', '"doklink_kp"', 25832, '''NO LINK''', '');
+INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (101, 55, 'Støjbelastede arealer', '"dbo"', '"Stojbelastede_arealer_1109"', '"bem"', '"MI_PRINX"', '"SP_GEOMETRY"', '"link"', 25832, '''NO LINK''', '');
+INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (102, 55, 'Planlægningszone for risikovirksomheder', '"dbo"', '"risikovirksomheder_buffer_500m"', '"MI_PRINX"', '"MI_PRINX"', '"SP_GEOMETRY"', '''NO LINK''', 25832, '''NO LINK''', '');
+INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (103, 55, 'Støjende anlæg', '"dbo"', '"Stojende_anlaeg_KP13"', '"Beskrivelse"', '"MI_PRINX"', '"SP_GEOMETRY"', '''NO LINK''', 25832, '''NO LINK''', '');
+INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (105, 20, 'Matrikeldata,  dictionary form', '"dbo"', '"jordstykke"', 'concat (''{''''landsejerlavskode'''': '''''',"landsejerlavskode",'''''', ''''matrikelnummer'''': '''''',"matrikelnummer",''''''}'')', '"featureID"', '"geometri"', '''NO LINK''', 25832, '''NO LINK''', '\\f-gis02\gis\Program Files\QGIS\Frederikssund temaer\005~Grunddata\Matrikeldata\Matrikelskel.qlr');
+INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (106, 63, 'Drikkevandsinteresser', '"dbo"', '"drikkevands_inter"', '"temanavn"', '"ogr_fid"', '"sp_geometry"', '''NO LINK''', 25832, '''NO LINK''', '');
+INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (107, 20, 'Indvindingsoplande', '"dbo"', '"Indvindingsoplande"', '"Navn"', '"MI_PRINX"', '"SP_GEOMETRY"', '''NO LINK''', 25832, '''NO LINK''', '');
+INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (108, 20, 'Jordbundstype', '"dbo"', '"jordbundstype"', '"JORD_TEKST"', '"MI_PRINX"', '"SP_GEOMETRY"', '''NO LINK''', 25832, '''NO LINK''', '');
+INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (109, 20, 'Jordartskort', '"dbo"', '"FRBJORD"', '"Tekst"', '"MI_PRINX"', '"SP_GEOMETRY"', '''NO LINK''', 25832, '''NO LINK''', '');
+INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (111, 20, 'Kulturarvsarealer', '"dbo"', '"fundogfortid_areal_ka"', '"datering"', '"ogr_fid"', '"sp_geometry"', '"url"', 25832, '''NO LINK''', '');
+INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (112, 55, 'Lavbundarealer', '"dbo"', '"Lavbundsarealer_1113"', '"type1113"', '"MI_PRINX"', '"SP_GEOMETRY"', '''NO LINK''', 25832, '''NO LINK''', '');
+INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (113, 55, 'Lavbund - vådområder', '"dbo"', '"Lavbund_vaadomr_KP13"', '"Tekst"', '"MI_PRINX"', '"SP_GEOMETRY"', '''NO LINK''', 25832, '''NO LINK''', '');
+INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (114, 20, 'Jupiter Boring m 50m buffer', '"dbo"', '"jupiter_boringer_50m_buffer"', '"formaal_tekst"', '"ogr_fid"', '"sp_geometry"', '"url"', 25832, '''NO LINK''', '');
+INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (115, 20, 'Sårbarhedskort', '"dbo"', '"NYSAARB"', '"Korttekst"', '"MI_PRINX"', '"SP_GEOMETRY"', '''NO LINK''', 25832, '''NO LINK''', '');
+INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (116, 20, 'Indvindingsopland', '"dbo"', '"Indvindingsoplande"', '"Tekst2"', '"MI_PRINX"', '"SP_GEOMETRY"', '''NO LINK''', 25832, '''NO LINK''', '');
+INSERT INTO "layers" ("lid", "cid", "layername", "schemaname", "tablename", "compoundid", "pkid", "geomid", "linkid", "epsg", "layerlink", "qlr_file") VALUES (117, 20, 'Hovedejer', '"dbo"', '"EOM_hovedejer"', '"CBSKADR"', '"featureID"', '"geometri"', '''NO LINK''', 25832, '''NO LINK''', '');
 
 
 --
--- TOC entry 3547 (class 0 OID 51631)
+-- TOC entry 3549 (class 0 OID 51631)
 -- Dependencies: 205
--- Data for Name: profiles; Type: TABLE DATA; Schema: conflict; Owner: -
+-- Data for Name: profiles; Type: TABLE DATA; Schema: conflict; Owner: postgres
 --
 
-INSERT INTO "profiles" ("pid", "profilename", "default_tool", "default_buffersize", "default_searchtype") VALUES (23, 'Byggesag/teknik', 2, 3, 1);
-INSERT INTO "profiles" ("pid", "profilename", "default_tool", "default_buffersize", "default_searchtype") VALUES (41, '** TEST ** Udstykning', 0, -0.10000000000000001, 0);
-INSERT INTO "profiles" ("pid", "profilename", "default_tool", "default_buffersize", "default_searchtype") VALUES (62, '** TEST ** Matrikeldata', 2, 0.5, 0);
+INSERT INTO "profiles" ("pid", "profilename", "default_tool", "default_buffersize", "default_searchtype", "profile_link") VALUES (118, 'Miljø - Jordvarmetilladelser', 0, 0, 0, '');
+INSERT INTO "profiles" ("pid", "profilename", "default_tool", "default_buffersize", "default_searchtype", "profile_link") VALUES (41, 'Byg - Udstykning ** TEST ** ikke færdiggjort', 0, -0.10000000000000001, 0, '');
+INSERT INTO "profiles" ("pid", "profilename", "default_tool", "default_buffersize", "default_searchtype", "profile_link") VALUES (110, 'Vand - Jordsager', 0, 0, 0, '');
+INSERT INTO "profiles" ("pid", "profilename", "default_tool", "default_buffersize", "default_searchtype", "profile_link") VALUES (104, 'Byg - Bebyggelsesregulerende', 2, -0.10000000000000001, 1, '');
+INSERT INTO "profiles" ("pid", "profilename", "default_tool", "default_buffersize", "default_searchtype", "profile_link") VALUES (23, 'Byg - Teknik', 2, 3, 1, '');
 
 
 --
--- TOC entry 3548 (class 0 OID 51635)
+-- TOC entry 3550 (class 0 OID 51635)
 -- Dependencies: 206
--- Data for Name: profiles_layers; Type: TABLE DATA; Schema: conflict; Owner: -
+-- Data for Name: profiles_layers; Type: TABLE DATA; Schema: conflict; Owner: postgres
 --
 
 INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (29, 23, true);
@@ -303,7 +359,6 @@ INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (49, 41, true);
 INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (50, 41, true);
 INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (51, 41, true);
 INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (52, 41, true);
-INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (58, 62, true);
 INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (65, 41, true);
 INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (66, 41, true);
 INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (67, 41, true);
@@ -326,12 +381,89 @@ INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (83, 41, true);
 INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (84, 41, true);
 INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (85, 41, true);
 INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (86, 41, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (77, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (78, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (44, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (88, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (45, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (46, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (47, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (48, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (49, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (81, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (80, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (82, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (83, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (84, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (85, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (42, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (86, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (89, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (90, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (87, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (70, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (72, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (74, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (75, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (66, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (67, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (68, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (91, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (39, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (92, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (93, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (94, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (95, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (96, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (97, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (98, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (99, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (100, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (101, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (102, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (22, 104, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (79, 110, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (77, 110, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (78, 110, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (106, 110, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (73, 110, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (107, 110, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (108, 110, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (109, 110, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (89, 118, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (84, 118, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (85, 118, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (111, 118, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (72, 118, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (82, 118, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (71, 118, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (42, 118, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (70, 118, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (73, 118, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (112, 118, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (113, 118, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (74, 118, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (75, 118, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (66, 118, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (67, 118, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (68, 118, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (77, 118, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (78, 118, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (79, 118, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (114, 118, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (106, 118, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (115, 118, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (116, 118, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (91, 118, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (32, 118, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (29, 118, true);
+INSERT INTO "profiles_layers" ("lid", "pid", "show") VALUES (117, 118, true);
 
 
 --
--- TOC entry 3550 (class 0 OID 51651)
+-- TOC entry 3552 (class 0 OID 51651)
 -- Dependencies: 208
--- Data for Name: projections; Type: TABLE DATA; Schema: conflict; Owner: -
+-- Data for Name: projections; Type: TABLE DATA; Schema: conflict; Owner: postgres
 --
 
 INSERT INTO "projections" ("epsg", "description") VALUES (25832, 'UTM32/ETRS89');
@@ -340,43 +472,44 @@ INSERT INTO "projections" ("epsg", "description") VALUES (4326, 'LL/WGS84');
 
 
 --
--- TOC entry 3549 (class 0 OID 51639)
+-- TOC entry 3551 (class 0 OID 51639)
 -- Dependencies: 207
--- Data for Name: servertypes; Type: TABLE DATA; Schema: conflict; Owner: -
+-- Data for Name: servertypes; Type: TABLE DATA; Schema: conflict; Owner: postgres
 --
 
-INSERT INTO "servertypes" ("sid", "servertypename", "sql_overview", "sql_detail", "sql_filter", "serverconnection") VALUES (19, 'QODBC-MSSQL-USER', 'select ''{}'' as layername, {} as overviewlink, count(*) as number from {}.{}', 'select ''{}'' as profilename, ''{}'' as layername,{} as layerid, {} as link, {}.STAsText() as wkt_geom from {}.{}', 'geometry::STGeomFromText(''{0}'',{1}).STBuffer({2}).STIntersects({3})=1', 'Driver={{SQL Server}};Server={0};Database={4};Uid={2};Pwd={3};');
-INSERT INTO "servertypes" ("sid", "servertypename", "sql_overview", "sql_detail", "sql_filter", "serverconnection") VALUES (9, 'QODBC-MSSQL-INTEGRATED', 'select ''{}'' as layername, {} as overviewlink, count(*) as number from {}.{}', 'select ''{}'' as profilename, ''{}'' as layername,{} as layerid, {} as link, {}.STAsText() as wkt_geom from {}.{}', 'geometry::STGeomFromText(''{0}'',{1}).STBuffer({2}).STIntersects({3})=1', 'Driver={{SQL Server}};Server={0};Database={4};Trusted_Connection=Yes;');
-INSERT INTO "servertypes" ("sid", "servertypename", "sql_overview", "sql_detail", "sql_filter", "serverconnection") VALUES (1, 'QPSQL', 'select ''{}'' as layername, {} as overviewlink, count(*) as number from {}.{}', 'select ''{}'' as profilename, ''{}'' as layername,{} as layerid, {} as link, st_astext({}) as wkt_geom from {}.{}', 'st_intersects(st_buffer(st_geomfromtext(''{0}'',{1}),{2}),{3})', NULL);
+INSERT INTO "servertypes" ("sid", "servertypename", "sql_overview", "sql_detail", "sql_filter", "serverconnection", "wkt_field") VALUES (1, 'QPSQL', 'select ''{}'' as layername, {} as overviewlink, count(*) as number from {}.{}', 'select ''{}'' as profilename, ''{}'' as layername,{} as layerid, {} as link, st_astext({}) as wkt_geom from {}.{}', 'st_intersects(st_buffer(st_geomfromtext(''{0}'',{1}),{2}),{3})', NULL, 'st_astext({}) as wkt_geom');
+INSERT INTO "servertypes" ("sid", "servertypename", "sql_overview", "sql_detail", "sql_filter", "serverconnection", "wkt_field") VALUES (9, 'QODBC-MSSQL-INTEGRATED', 'select ''{}'' as layername, {} as overviewlink, count(*) as number from {}.{}', 'select ''{}'' as profilename, ''{}'' as layername,{} as layerid, {} as link, {}.STAsText() as wkt_geom from {}.{}', 'geometry::STGeomFromText(''{0}'',{1}).STBuffer({2}).STIntersects({3})=1', 'Driver={{SQL Server}};Server={0};Database={4};Trusted_Connection=Yes;', '{}.STAsText() as wkt_geom');
+INSERT INTO "servertypes" ("sid", "servertypename", "sql_overview", "sql_detail", "sql_filter", "serverconnection", "wkt_field") VALUES (19, 'QODBC-MSSQL-USER', 'select ''{}'' as layername, {} as overviewlink, count(*) as number from {}.{}', 'select ''{}'' as profilename, ''{}'' as layername,{} as layerid, {} as link, {}.STAsText() as wkt_geom from {}.{}', 'geometry::STGeomFromText(''{0}'',{1}).STBuffer({2}).STIntersects({3})=1', 'Driver={{SQL Server}};Server={0};Database={4};Uid={2};Pwd={3};', '{}.STAsText() as wkt_geom');
 
 
 --
--- TOC entry 3551 (class 0 OID 53425)
--- Dependencies: 210
--- Data for Name: settings; Type: TABLE DATA; Schema: conflict; Owner: -
+-- TOC entry 3553 (class 0 OID 53425)
+-- Dependencies: 209
+-- Data for Name: settings; Type: TABLE DATA; Schema: conflict; Owner: postgres
 --
 
 INSERT INTO "settings" ("maingroup", "name", "itemvalue", "itemtype") VALUES ('base', 'search_color', '#FF0000', 'str');
-INSERT INTO "settings" ("maingroup", "name", "itemvalue", "itemtype") VALUES ('base', 'search_width', '4', 'int');
 INSERT INTO "settings" ("maingroup", "name", "itemvalue", "itemtype") VALUES ('base', 'search_style', '1', 'int');
 INSERT INTO "settings" ("maingroup", "name", "itemvalue", "itemtype") VALUES ('base', 'search_icon', '1', 'int');
 INSERT INTO "settings" ("maingroup", "name", "itemvalue", "itemtype") VALUES ('base', 'search_size', '30', 'int');
-INSERT INTO "settings" ("maingroup", "name", "itemvalue", "itemtype") VALUES ('base', 'buffer_color', '#777777', 'str');
-INSERT INTO "settings" ("maingroup", "name", "itemvalue", "itemtype") VALUES ('base', 'buffer_width', '4', 'int');
 INSERT INTO "settings" ("maingroup", "name", "itemvalue", "itemtype") VALUES ('base', 'buffer_style', '1', 'int');
 INSERT INTO "settings" ("maingroup", "name", "itemvalue", "itemtype") VALUES ('base', 'result_color', '#FDA040', 'str');
 INSERT INTO "settings" ("maingroup", "name", "itemvalue", "itemtype") VALUES ('base', 'result_width', '4', 'int');
 INSERT INTO "settings" ("maingroup", "name", "itemvalue", "itemtype") VALUES ('base', 'result_style', '1', 'int');
 INSERT INTO "settings" ("maingroup", "name", "itemvalue", "itemtype") VALUES ('base', 'result_icon', '4', 'int');
 INSERT INTO "settings" ("maingroup", "name", "itemvalue", "itemtype") VALUES ('base', 'result_size', '15', 'int');
-INSERT INTO "settings" ("maingroup", "name", "itemvalue", "itemtype") VALUES ('base', 'search_buffer', '199.99', 'float');
 INSERT INTO "settings" ("maingroup", "name", "itemvalue", "itemtype") VALUES ('base', 'buffer_min', '0.5', 'float');
 INSERT INTO "settings" ("maingroup", "name", "itemvalue", "itemtype") VALUES ('base', 'buffer_std', '-0.1', 'float');
+INSERT INTO "settings" ("maingroup", "name", "itemvalue", "itemtype") VALUES ('base', 'adm_layer', '105', 'int');
+INSERT INTO "settings" ("maingroup", "name", "itemvalue", "itemtype") VALUES ('base', 'buffer_color', '#cccc00', 'str');
+INSERT INTO "settings" ("maingroup", "name", "itemvalue", "itemtype") VALUES ('base', 'buffer_width', '3', 'int');
+INSERT INTO "settings" ("maingroup", "name", "itemvalue", "itemtype") VALUES ('base', 'search_width', '5', 'int');
+INSERT INTO "settings" ("maingroup", "name", "itemvalue", "itemtype") VALUES ('base', 'search_buffer', '19.99', 'float');
 
 
 --
--- TOC entry 3401 (class 2606 OID 51655)
--- Name: connections conflict_connections_pkey; Type: CONSTRAINT; Schema: conflict; Owner: -
+-- TOC entry 3403 (class 2606 OID 51655)
+-- Name: connections conflict_connections_pkey; Type: CONSTRAINT; Schema: conflict; Owner: postgres
 --
 
 ALTER TABLE ONLY "connections"
@@ -384,8 +517,8 @@ ALTER TABLE ONLY "connections"
 
 
 --
--- TOC entry 3403 (class 2606 OID 51657)
--- Name: layers conflict_layers_pkey; Type: CONSTRAINT; Schema: conflict; Owner: -
+-- TOC entry 3405 (class 2606 OID 51657)
+-- Name: layers conflict_layers_pkey; Type: CONSTRAINT; Schema: conflict; Owner: postgres
 --
 
 ALTER TABLE ONLY "layers"
@@ -393,8 +526,8 @@ ALTER TABLE ONLY "layers"
 
 
 --
--- TOC entry 3407 (class 2606 OID 51659)
--- Name: profiles_layers conflict_profiles_layers_pkey; Type: CONSTRAINT; Schema: conflict; Owner: -
+-- TOC entry 3409 (class 2606 OID 51659)
+-- Name: profiles_layers conflict_profiles_layers_pkey; Type: CONSTRAINT; Schema: conflict; Owner: postgres
 --
 
 ALTER TABLE ONLY "profiles_layers"
@@ -402,8 +535,8 @@ ALTER TABLE ONLY "profiles_layers"
 
 
 --
--- TOC entry 3405 (class 2606 OID 51661)
--- Name: profiles conflict_profiles_pkey; Type: CONSTRAINT; Schema: conflict; Owner: -
+-- TOC entry 3407 (class 2606 OID 51661)
+-- Name: profiles conflict_profiles_pkey; Type: CONSTRAINT; Schema: conflict; Owner: postgres
 --
 
 ALTER TABLE ONLY "profiles"
@@ -411,8 +544,8 @@ ALTER TABLE ONLY "profiles"
 
 
 --
--- TOC entry 3411 (class 2606 OID 51663)
--- Name: projections conflict_projections_pkey; Type: CONSTRAINT; Schema: conflict; Owner: -
+-- TOC entry 3413 (class 2606 OID 51663)
+-- Name: projections conflict_projections_pkey; Type: CONSTRAINT; Schema: conflict; Owner: postgres
 --
 
 ALTER TABLE ONLY "projections"
@@ -420,8 +553,8 @@ ALTER TABLE ONLY "projections"
 
 
 --
--- TOC entry 3409 (class 2606 OID 51665)
--- Name: servertypes conflict_servertypes_pkey; Type: CONSTRAINT; Schema: conflict; Owner: -
+-- TOC entry 3411 (class 2606 OID 51665)
+-- Name: servertypes conflict_servertypes_pkey; Type: CONSTRAINT; Schema: conflict; Owner: postgres
 --
 
 ALTER TABLE ONLY "servertypes"
@@ -429,8 +562,8 @@ ALTER TABLE ONLY "servertypes"
 
 
 --
--- TOC entry 3413 (class 2606 OID 53432)
--- Name: settings conflict_settings_pkey; Type: CONSTRAINT; Schema: conflict; Owner: -
+-- TOC entry 3415 (class 2606 OID 53432)
+-- Name: settings conflict_settings_pkey; Type: CONSTRAINT; Schema: conflict; Owner: postgres
 --
 
 ALTER TABLE ONLY "settings"
@@ -438,8 +571,8 @@ ALTER TABLE ONLY "settings"
 
 
 --
--- TOC entry 3414 (class 2606 OID 51666)
--- Name: connections conflict_connections_servertypes_sid_fkey; Type: FK CONSTRAINT; Schema: conflict; Owner: -
+-- TOC entry 3416 (class 2606 OID 51666)
+-- Name: connections conflict_connections_servertypes_sid_fkey; Type: FK CONSTRAINT; Schema: conflict; Owner: postgres
 --
 
 ALTER TABLE ONLY "connections"
@@ -447,8 +580,8 @@ ALTER TABLE ONLY "connections"
 
 
 --
--- TOC entry 3415 (class 2606 OID 51671)
--- Name: layers conflict_layers_connections_cid_fkey; Type: FK CONSTRAINT; Schema: conflict; Owner: -
+-- TOC entry 3417 (class 2606 OID 51671)
+-- Name: layers conflict_layers_connections_cid_fkey; Type: FK CONSTRAINT; Schema: conflict; Owner: postgres
 --
 
 ALTER TABLE ONLY "layers"
@@ -456,8 +589,8 @@ ALTER TABLE ONLY "layers"
 
 
 --
--- TOC entry 3416 (class 2606 OID 51676)
--- Name: layers conflict_layers_projections_epsg_fkey; Type: FK CONSTRAINT; Schema: conflict; Owner: -
+-- TOC entry 3418 (class 2606 OID 51676)
+-- Name: layers conflict_layers_projections_epsg_fkey; Type: FK CONSTRAINT; Schema: conflict; Owner: postgres
 --
 
 ALTER TABLE ONLY "layers"
@@ -465,8 +598,8 @@ ALTER TABLE ONLY "layers"
 
 
 --
--- TOC entry 3417 (class 2606 OID 51681)
--- Name: profiles_layers conflict_profiles_layers_layers_lid_fkey; Type: FK CONSTRAINT; Schema: conflict; Owner: -
+-- TOC entry 3419 (class 2606 OID 51681)
+-- Name: profiles_layers conflict_profiles_layers_layers_lid_fkey; Type: FK CONSTRAINT; Schema: conflict; Owner: postgres
 --
 
 ALTER TABLE ONLY "profiles_layers"
@@ -474,15 +607,114 @@ ALTER TABLE ONLY "profiles_layers"
 
 
 --
--- TOC entry 3418 (class 2606 OID 51686)
--- Name: profiles_layers conflict_profiles_layers_profiles_pid_fkey; Type: FK CONSTRAINT; Schema: conflict; Owner: -
+-- TOC entry 3420 (class 2606 OID 54549)
+-- Name: profiles_layers conflict_profiles_layers_profiles_pid_fkey; Type: FK CONSTRAINT; Schema: conflict; Owner: postgres
 --
 
 ALTER TABLE ONLY "profiles_layers"
-    ADD CONSTRAINT "conflict_profiles_layers_profiles_pid_fkey" FOREIGN KEY ("pid") REFERENCES "profiles"("pid") ON UPDATE CASCADE;
+    ADD CONSTRAINT "conflict_profiles_layers_profiles_pid_fkey" FOREIGN KEY ("pid") REFERENCES "profiles"("pid") ON UPDATE CASCADE ON DELETE CASCADE;
 
 
--- Completed on 2017-03-02 15:44:08
+--
+-- TOC entry 3558 (class 0 OID 0)
+-- Dependencies: 8
+-- Name: conflict; Type: ACL; Schema: -; Owner: postgres
+--
+
+GRANT USAGE ON SCHEMA "conflict" TO "conflict_group";
+GRANT USAGE ON SCHEMA "conflict" TO "conflict";
+
+
+--
+-- TOC entry 3559 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: conflict_seq; Type: ACL; Schema: conflict; Owner: postgres
+--
+
+GRANT SELECT,USAGE ON SEQUENCE "conflict_seq" TO "conflict_group";
+
+
+--
+-- TOC entry 3560 (class 0 OID 0)
+-- Dependencies: 203
+-- Name: connections; Type: ACL; Schema: conflict; Owner: postgres
+--
+
+GRANT SELECT ON TABLE "connections" TO "conflict";
+GRANT SELECT,REFERENCES,TRIGGER ON TABLE "connections" TO "conflict_group";
+
+
+--
+-- TOC entry 3561 (class 0 OID 0)
+-- Dependencies: 204
+-- Name: layers; Type: ACL; Schema: conflict; Owner: postgres
+--
+
+GRANT SELECT ON TABLE "layers" TO "conflict";
+GRANT SELECT,REFERENCES,TRIGGER ON TABLE "layers" TO "conflict_group";
+
+
+--
+-- TOC entry 3562 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: profiles; Type: ACL; Schema: conflict; Owner: postgres
+--
+
+GRANT SELECT ON TABLE "profiles" TO "conflict";
+GRANT SELECT,REFERENCES,TRIGGER ON TABLE "profiles" TO "conflict_group";
+
+
+--
+-- TOC entry 3563 (class 0 OID 0)
+-- Dependencies: 206
+-- Name: profiles_layers; Type: ACL; Schema: conflict; Owner: postgres
+--
+
+GRANT SELECT ON TABLE "profiles_layers" TO "conflict";
+GRANT SELECT,REFERENCES,TRIGGER ON TABLE "profiles_layers" TO "conflict_group";
+
+
+--
+-- TOC entry 3564 (class 0 OID 0)
+-- Dependencies: 207
+-- Name: servertypes; Type: ACL; Schema: conflict; Owner: postgres
+--
+
+GRANT SELECT ON TABLE "servertypes" TO "conflict";
+GRANT SELECT,REFERENCES,TRIGGER ON TABLE "servertypes" TO "conflict_group";
+
+
+--
+-- TOC entry 3565 (class 0 OID 0)
+-- Dependencies: 210
+-- Name: profiles_layers_view; Type: ACL; Schema: conflict; Owner: postgres
+--
+
+GRANT SELECT ON TABLE "profiles_layers_view" TO "conflict";
+GRANT SELECT,REFERENCES,TRIGGER ON TABLE "profiles_layers_view" TO "conflict_group";
+
+
+--
+-- TOC entry 3566 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: projections; Type: ACL; Schema: conflict; Owner: postgres
+--
+
+GRANT SELECT ON TABLE "projections" TO "conflict";
+GRANT SELECT,REFERENCES,TRIGGER ON TABLE "projections" TO "conflict_group";
+
+
+--
+-- TOC entry 3567 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: settings; Type: ACL; Schema: conflict; Owner: postgres
+--
+
+GRANT SELECT ON TABLE "settings" TO "conflict";
+GRANT SELECT,REFERENCES,TRIGGER ON TABLE "settings" TO "conflict_group";
+
+
+-- Completed on 2017-03-16 09:16:38
 
 --
 -- PostgreSQL database dump complete
