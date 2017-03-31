@@ -151,13 +151,13 @@ class ImpactAnalysis2DockWidget(QtGui.QDockWidget, FORM_CLASS):
 
             # Change geometry to a collection of objects from administrative layer if necessary
             if self.acOvl.isChecked():
-                geom = self.convertGeom2AdmCollection (geom,epsg,self.dbmeta, self.config['db_schema'], 'layers',self.config['adm_layer'])
+                geom = self.convertGeom2AdmCollection (geom,self.checkBufferValue(geom,self.config['buffer_min'],self.dsbBuffer.value(), False), epsg, self.dbmeta, self.config['db_schema'], 'layers',self.config['adm_layer'])
      
             if not geom is None:            
 
             
                 # check and correct buffervalue compared with geometry type
-                self.dsbBuffer.setValue(self.checkBufferValue(geom,self.config['buffer_min'],self.dsbBuffer.value()))
+                self.dsbBuffer.setValue(self.checkBufferValue(geom,self.config['buffer_min'],self.dsbBuffer.value(), True))
                 
                 # Save geometry object for future reference
                 self.searchobj = geom
@@ -387,7 +387,7 @@ class ImpactAnalysis2DockWidget(QtGui.QDockWidget, FORM_CLASS):
                 self.iface.messageBar().pushMessage  (tr(u'Impact Analysis'), tr(u'No profiles loaded from database "') + tb, QgsMessageBar.CRITICAL,3)
 
                 
-    def convertGeom2AdmCollection (self,geom,epsg,db,schema,table,pkid):
+    def convertGeom2AdmCollection (self,geom,buffer,epsg,db,schema,table,pkid):
 
         geoms = None
         
@@ -412,7 +412,7 @@ class ImpactAnalysis2DockWidget(QtGui.QDockWidget, FORM_CLASS):
             if not dbl is None:
                 if dbl.isOpen():            
                     # Select af list of geometries from administrative layer which overlaps the search object
-                    sqlstrl = 'select {0} from {1}.{2} where {3}'.format(query.value(3).format(self.qtf(query.value(12))), self.qtf(query.value(10)), self.qtf(query.value(11)), query.value(2).format(wkt,query.value(13),0.1,self.qtf(query.value(12))))
+                    sqlstrl = 'select {0} from {1}.{2} where {3}'.format(query.value(3).format(self.qtf(query.value(12))), self.qtf(query.value(10)), self.qtf(query.value(11)), query.value(2).format(wkt,query.value(13),buffer,self.qtf(query.value(12))))
                     queryl = dbl.exec_(sqlstrl)
                     while queryl.next(): 
                         if geoms == None:
@@ -430,14 +430,15 @@ class ImpactAnalysis2DockWidget(QtGui.QDockWidget, FORM_CLASS):
         
         return geoms
                 
-    def checkBufferValue (self, geom, minval, nuvval):
+    def checkBufferValue (self, geom, minval, nuvval, warning):
     
         # Find geometry type
         gtx = -1 if geom == None else geom.type()
         
         # Check/set value: type = point/line, orginal object user is true and value less than min value        
         if gtx in [0,1] and minval > nuvval:
-            self.iface.messageBar().pushMessage (tr(u'Impact Analysis'),tr(u'Buffersize changed.. Original value ({}) changed to minimum buffer value ({}) for point and lines').format(nuvval,minval), QgsMessageBar.WARNING,3)
+            if warning:
+                self.iface.messageBar().pushMessage (tr(u'Impact Analysis'),tr(u'Buffersize changed.. Original value ({}) changed to minimum buffer value ({}) for point and lines').format(nuvval,minval), QgsMessageBar.WARNING,3)
             return minval
         else:
             return nuvval
