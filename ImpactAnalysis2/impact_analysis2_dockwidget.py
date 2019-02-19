@@ -128,7 +128,7 @@ class ImpactAnalysis2DockWidget(QtGui.QDockWidget, FORM_CLASS):
             self.pbSearchobj.setIcon (icon)      
             self.pbSearchobj.setText (action.text() + '->[]' if self.acOvl.isChecked() else action.text()) 
 
-    def on_agSearchObj1_triggered (self,action):
+    def on_agSearchObj1_triggered(self,action):
 
         self.on_agSearchObj1_triggered_x(action)
         self.on_pbSearchobj_clicked()        
